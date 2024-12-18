@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pemesanan Menu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+
+
+ <!-- Navbar -->
+<nav class="bg-yellow-500 p-4 flex justify-between items-center">
+  <div class="flex items-center space-x-2">
+    <img src="images.jpeg" alt="Gerobak Lomie Logo" class="h-8 w-8">
+    <span class="text-xl font-bold text-white">Gerobak Lomie</span>
+  </div>
+  <ul class="hidden md:flex space-x-4 text-white">
+    <li><a href="index.html" class="hover:text-gray-200">Home</a></li>
+    <li><a href="menu.html" class="hover:text-gray-200">Menu</a></li>
+    <li><a href="alamat.html" class="hover:text-gray-200">Alamat</a></li>
+    <li><a href="pesanan.html" class="hover:text-gray-200">Pesanan</a></li>
+    <li><a href="kontak.html" class="hover:text-gray-200">Kontak</a></li>
+  </ul>
+  <div id="navbar-toggle" class="md:hidden cursor-pointer">
+    <span class="block w-8 h-1 bg-white mb-1"></span>
+    <span class="block w-8 h-1 bg-white mb-1"></span>
+    <span class="block w-8 h-1 bg-white"></span>
+  </div>
+</nav>
+
+
+    <div class="container mx-auto p-6">
+        <!-- Form Pilih Menu -->
+        <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+            <h2 class="text-xl font-semibold mb-4">Pilih Menu</h2>
+            <form id="order-form">
+                <!-- Dropdown Menu -->
+                <label for="menu-select" class="block mb-2 text-gray-700 font-semibold">Pilih Menu:</label>
+                <select id="menu-select" class="w-full p-3 border rounded-lg mb-4">
+                    <option value="" disabled selected>-- Pilih Menu --</option>
+                    <!-- Menu Makanan -->
+                    <optgroup label="MAKANAN">
+                        <option value="Mie Pangsit Lomie,16000">Mie Pangsit Lomie - Rp 16,000</option>
+                        <option value="Mie Pangsit Bakso Besar,26000">Mie Pangsit Bakso Besar - Rp 26,000</option>
+                        <option value="Mie Pangsit Bakso Biasa,23000">Mie Pangsit Bakso Biasa - Rp 23,000</option>
+                        <option value="Mie Kering / Titi,30000">Mie Kering / Titi - Rp 30,000</option>
+                        <option value="Mie Kering / Titi Sea Food,40000">Mie Kering / Titi Sea Food - Rp 40,000</option>
+                        <option value="Cap Cay Goreng / Kuah,33000">Cap Cay Goreng / Kuah - Rp 33,000</option>
+                        <option value="Cap Cay Sea Food,40000">Cap Cay Sea Food - Rp 40,000</option>
+                        <option value="Nasi Goreng Jakarta,26000">Nasi Goreng Jakarta - Rp 26,000</option>
+                        <option value="Ayam Penyet Kremes + Nasi,30000">Ayam Penyet Kremes + Nasi - Rp 30,000</option>
+                        <option value="Bakso,21000">Bakso - Rp 21,000</option>
+                        <option value="Telur Mata Sapi / Telur Dadar,4000">Telur Mata Sapi / Telur Dadar - Rp 4,000</option>
+                    </optgroup>
+                    <!-- Menu Minuman -->
+                    <optgroup label="MINUMAN">
+                        <option value="Air Mineral Botol,5000">Air Mineral Botol - Rp 5,000</option>
+                        <option value="Teh Hangat,5000">Teh Hangat - Rp 5,000</option>
+                        <option value="Es Teh Manis,5000">Es Teh Manis - Rp 5,000</option>
+                        <option value="Es Lemon Tea,15000">Es Lemon Tea - Rp 15,000</option>
+                        <option value="Es Cappucino,10000">Es Cappucino - Rp 10,000</option>
+                        <option value="Es Soda Gembira,15000">Es Soda Gembira - Rp 15,000</option>
+                        <option value="Jus Sirsak,15000">Jus Sirsak - Rp 15,000</option>
+                        <option value="Jus Apel,15000">Jus Apel - Rp 15,000</option>
+                        <option value="Jus Avocado,20000">Jus Avocado - Rp 20,000</option>
+                        <option value="Jus Mangga,20000">Jus Mangga - Rp 20,000</option>
+                        <option value="Thai Tea,15000">Thai Tea - Rp 15,000</option>
+                    </optgroup>
+                </select>
+
+                <!-- Tombol Tambah -->
+                <button type="submit" class="bg-yellow-500 text-white px-4 py-2 rounded-lg w-full">Tambah ke Pesanan</button>
+            </form>
+        </div>
+
+        <!-- Daftar Pesanan -->
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-xl font-semibold mb-4">Daftar Pesanan</h2>
+            <table class="table-auto w-full border-collapse border border-gray-200">
+                <thead>
+                    <tr class="bg-gray-200">
+                        <th class="border border-gray-300 px-4 py-2">No</th>
+                        <th class="border border-gray-300 px-4 py-2">Nama Menu</th>
+                        <th class="border border-gray-300 px-4 py-2">Harga</th>
+                        <th class="border border-gray-300 px-4 py-2">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="order-items">
+                    <!-- Pesanan akan ditambahkan di sini -->
+                </tbody>
+            </table>
+
+            <!-- Total Harga -->
+            <div class="mt-4 text-right">
+                <h3 class="text-lg font-semibold">Total Harga: <span id="total-price" class="text-green-500">Rp 0</span></h3>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById("order-form");
+        const menuSelect = document.getElementById("menu-select");
+        const orderItems = document.getElementById("order-items");
+        const totalPriceElement = document.getElementById("total-price");
+
+        let orderCount = 0;
+        let totalPrice = 0;
+
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            const selectedValue = menuSelect.value;
+            if (!selectedValue) {
+                alert("Silakan pilih menu terlebih dahulu.");
+                return;
+            }
+
+            const [menuName, menuPrice] = selectedValue.split(",");
+            orderCount++;
+            totalPrice += parseInt(menuPrice);
+
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td class="border border-gray-300 px-4 py-2 text-center">${orderCount}</td>
+                <td class="border border-gray-300 px-4 py-2">${menuName}</td>
+                <td class="border border-gray-300 px-4 py-2 text-right">Rp ${parseInt(menuPrice).toLocaleString()}</td>
+                <td class="border border-gray-300 px-4 py-2 text-center">
+                    <button onclick="removeOrder(this, ${menuPrice})" class="text-red-500 hover:underline">Hapus</button>
+                </td>
+            `;
+            orderItems.appendChild(row);
+
+            totalPriceElement.textContent = `Rp ${totalPrice.toLocaleString()}`;
+
+            menuSelect.selectedIndex = 0;
+        });
+
+        function removeOrder(button, price) {
+            const row = button.closest("tr");
+            row.remove();
+            totalPrice -= price;
+            totalPriceElement.textContent = `Rp ${totalPrice.toLocaleString()}`;
+        }
+    </script>
+
+     <footer class="bg-gray-800 py-6">
+    <div class="container mx-auto px-6 text-center">
+      <p class="text-gray-300 text-sm">&copy; 2024 Gerobak Lomie | M. Caesar Afgar. Semua hak dilindungi.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
