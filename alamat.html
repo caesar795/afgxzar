@@ -103,129 +103,121 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // Inisialisasi peta
-            const map = L.map('map', {
-                center: [-6.104302, 120.464484],
-                zoom: 18,
-                minZoom: 15,
-                maxZoom: 20,
-            });
+document.addEventListener("DOMContentLoaded", function () {
+    // Inisialisasi peta
+    const map = L.map('map', {
+        center: [-6.104302, 120.464484],
+        zoom: 18,
+        minZoom: 15,
+        maxZoom: 20,
+    });
 
-            // Tambahkan tile layer
-            const tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            });
-            tileLayer.addTo(map);
+    // Tambahkan tile layer
+    const tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    });
+    tileLayer.addTo(map);
 
-            // Data UMKM
-            const umkmData = {
-                name: "gerobak lomie selayar",
-                rating: "5.0",
-                reviews: 45,
-                category: "warung makan",
-                buka: "Buka · Tutup pukul 23:00 🔻",
-                alamat: "jl metro, Benteng utara, kec.Benteng  , sulawesi selatan 92812",
-                phone: "081224282103",
-                coords: [-6.104302, 120.464484],
-            };
+    // Data UMKM
+    const umkmData = {
+        name: "Gerobak Lomie Selayar",
+        rating: "5.0",
+        reviews: 45,
+        category: "Warung Makan",
+        buka: "Buka · Tutup pukul 23:00 🔻",
+        alamat: "Jl Metro, Benteng Utara, Kec. Benteng, Sulawesi Selatan 92812",
+        phone: "081224282103",
+        coords: [-6.104302, 120.464484],
+    };
 
-            // Tambahkan marker UMKM
-            const marker = L.marker(umkmData.coords).addTo(map);
-            marker.bindTooltip(umkmData.name, {
-                permanent: true,
-                direction: "top",
-                className: "marker-tooltip",
-            });
-            marker.bindPopup(`
-                <div class="popup-container">
-                    <div class="popup-header">${umkmData.name}</div>
-                    <div class="popup-rating">⭐ ${umkmData.rating} <span>(${umkmData.reviews})</span></div>
-                    <div class="popup-category">${umkmData.category}</div>
-                    <img src="./lomiee.jpg" style="height:200px; width:100%; object-fit:cover;" />
-                    <div class="popup-address"><i class="fas fa-map-marker-alt"></i> ${umkmData.alamat}</div>
-                    <div class="popup-contact"><i class="fas fa-phone-alt"></i> ${umkmData.phone}</div>
-                </div>
-            `);
+    // Tambahkan marker UMKM
+    const marker = L.marker(umkmData.coords).addTo(map);
+    marker.bindTooltip(umkmData.name, {
+        permanent: true,
+        direction: "top",
+        className: "marker-tooltip",
+    });
+    marker.bindPopup(`
+        <div class="popup-container">
+            <div class="popup-header">${umkmData.name}</div>
+            <div class="popup-rating">⭐ ${umkmData.rating} <span>(${umkmData.reviews})</span></div>
+            <div class="popup-category">${umkmData.category}</div>
+            <img src="./lomiee.jpg" style="height:200px; width:100%; object-fit:cover;" />
+            <div class="popup-address"><i class="fas fa-map-marker-alt"></i> ${umkmData.alamat}</div>
+            <div class="popup-contact"><i class="fas fa-phone-alt"></i> ${umkmData.phone}</div>
+        </div>
+    `);
 
-            // Gaya default untuk GeoJSON
-            const defaultStyle1 = {
-                color: "#f0f0f0",
-                weight: 1.5,
-                opacity: 0.8,
-                fillColor: "#45F450",
-                fillOpacity: 1,
-            };
+    // Ikon untuk masjid
+    const mesjidIcon = L.icon({
+        iconUrl: 'mesjid.png',
+        iconSize: [25, 25],
+        iconAnchor: [12, 25],
+        popupAnchor: [0, -20],
+    });
 
-            const defaultStyle2 = {
-                color: "#f0f0f0",
-                weight: 1.5,
-                opacity: 0.8,
-                fillColor: "#45F450",
-                fillOpacity: 1,
-            };
+    // Ikon untuk sekolah
+    const sekolahIcon = L.icon({
+        iconUrl: 'sekolah.png',
+        iconSize: [25, 25],
+        iconAnchor: [12, 25],
+        popupAnchor: [0, -20],
+    });
 
-            // Fungsi untuk memuat GeoJSON ke peta
-            function loadGeoJSON(url, styleOptions) {
-                fetch(url)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error(`Gagal memuat ${url}: ${response.status}`);
+    // Fungsi untuk memuat GeoJSON dengan ikon atau gaya khusus
+    function loadGeoJSON(url, icon = null, style = null) {
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Gagal memuat ${url}: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(geojsonData => {
+                L.geoJSON(geojsonData, {
+                    pointToLayer: function (feature, latlng) {
+                        return icon ? L.marker(latlng, { icon: icon }) : L.marker(latlng);
+                    },
+                    style: style,
+                    onEachFeature: function (feature, layer) {
+                        if (feature.properties && feature.properties.nama) {
+                            layer.bindPopup(`${feature.properties.nama}`);
                         }
-                        return response.json();
-                    })
-                    .then(geojsonData => {
-                        L.geoJSON(geojsonData, {
-                            style: styleOptions,
-                            onEachFeature: function (feature, layer) {
-                                if (feature.properties && feature.properties.nama) {
-                                    layer.bindPopup(`${feature.properties.nama}`);
-                                }
-                            },
-                        }).addTo(map);
-                    })
-                    .catch(error => console.error(`Kesalahan saat memuat ${url}:`, error));
-            }
+                    }
+                }).addTo(map);
+            })
+            .catch(error => console.error(`Kesalahan saat memuat ${url}:`, error));
+    }
 
-            // Memuat GeoJSON dengan gaya default
-    loadGeoJSON("./sekolah.geojson", {
-        color: "#f0f0f0",
-        weight: 1.5,
-        opacity: 0.8,
-        fillColor: "#45F450",
-        fillOpacity: 1,
+    // Memuat GeoJSON dengan ikon khusus
+    loadGeoJSON("./sekolah.geojson", sekolahIcon);
+    loadGeoJSON("./Mesjid.geojson", mesjidIcon);
+
+    // GeoJSON dengan gaya wilayah
+    const geojsonFiles = [
+        { url: "./BentengUtara.geojson", style: { color: "#f0f0f0", weight: 1.5, opacity: 0.8, fillColor: "red", fillOpacity: 0.2 } },
+        { url: "./BentengPusat.geojson", style: { color: "#f0f0f0", weight: 1.5, opacity: 0.8, fillColor: "yellow", fillOpacity: 0.2 } },
+        { url: "./BentengSelatan.geojson", style: { color: "#f0f0f0", weight: 1.5, opacity: 0.8, fillColor: "green", fillOpacity: 0.2 } },
+        { url: "./jalanBentengAnjay.geojson", style: { color: "#333", weight: 3, opacity: 1 } }
+    ];
+
+    // Memuat semua file GeoJSON dalam array
+    geojsonFiles.forEach(file => {
+        loadGeoJSON(file.url, null, file.style);
     });
-    loadGeoJSON("./Mesjid.geojson", {
-        color: "#f0f0f0",
-        weight: 1.5,
-        opacity: 0.8,
-        fillColor: "#45F450",
-        fillOpacity: 1,
-    });
-            // GeoJSON dengan gaya khusus
-            const geojsonFiles = [
-                { url: "./BentengUtara.geojson", style: { color: "#f0f0f0", weight: 1.5, opacity: 0.8, fillColor: "red", fillOpacity: 0.2 } },
-                { url: "./BentengPusat.geojson", style: { color: "#f0f0f0", weight: 1.5, opacity: 0.8, fillColor: "yellow", fillOpacity: 0.2 } },
-                { url: "./BentengSelatan.geojson", style: { color: "#f0f0f0", weight: 1.5, opacity: 0.8, fillColor: "green", fillOpacity: 0.2 } },
-                { url: "./jalanBentengAnjay.geojson", style: { color: "#333", weight: 3, opacity: 1 } }
-            ];
 
-            // Memuat semua file GeoJSON dalam array
-            geojsonFiles.forEach(file => {
-                loadGeoJSON(file.url, file.style);
-            });
+    // Kontrol layer (opsional)
+    const baseMaps = {
+        "OpenStreetMap": tileLayer
+    };
 
-            // Kontrol layer (opsional)
-            const baseMaps = {
-                "OpenStreetMap": tileLayer
-            };
+    const overlayMaps = {
+        "UMKM Marker": marker
+    };
 
-            const overlayMaps = {
-                "UMKM Marker": marker
-            };
+    L.control.layers(baseMaps, overlayMaps).addTo(map);
+});
 
-            L.control.layers(baseMaps, overlayMaps).addTo(map);
-        });
     </script>
     <script src="script.js"></script>
 </body>
